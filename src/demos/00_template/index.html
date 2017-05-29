@@ -28,8 +28,8 @@
           this.props.removeComment(this.props.index);
         },
         save:function(){
-          this.setState({editing: false})
-          this.props.updateComment(this.refs.newText,this.props.index);
+          this.setState({editing: false});
+          this.props.updateComment(this.refs.newText.value,this.props.index);
         },
         renderNormal:function(){
           return(
@@ -43,8 +43,8 @@
         renderForm:function(){
           return(
             <div>
-              <textarea refs="newText" defaultValue={this.props.children}></textarea>
-              <button onClick={this.edit} className="button-success">Save</button>
+              <textarea ref="newText" defaultValue={this.props.children}></textarea>
+              <button onClick={this.save} className="button-success">Save</button>
             </div>
           );
         },
@@ -61,13 +61,16 @@
       var Board= React.createClass({
         getInitialState:function(){
           return {
-            comments: [
-                    'I am madhav',
-                    'I like potato',
-                    'Hehhhe'
-          ]}
+            comments: []
+          }
+        },
+        add:function(text){
+          var arr = this.state.comments;
+          arr.push(text);
+          this.setState({comments: arr})
         },
         updateComment: function(newText,i){
+          console.log("updated");
           var arr =this.state.comments;
           arr[i] = newText;
           this.setState({comments: arr});
@@ -87,6 +90,7 @@
         render: function(){
           return (
             <div className="board">
+                  <button className="button-info create" onClick={this.add.bind(null,'Task')} >Add Task</button>
                    {this.state.comments.map(this.eachComment)}
             </div>
           );
